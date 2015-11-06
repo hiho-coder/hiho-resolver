@@ -1,0 +1,81 @@
+/*
+    main.css
+ */
+
+
+/*
+    reset bootstrap
+ */
+.navbar {
+    margin-bottom: 0;
+}
+
+
+/*
+    common
+ */
+.app {
+    background-color: #286090;
+    color: white;
+}
+.rank, .content, .problems li {
+    float: left;
+}
+.solved, .penalty {
+    float: right;
+}
+.rank-list-item {
+    border-bottom: 1px solid #31708F;
+    padding: 10px;
+}
+
+.status-solved {
+    background-color: #5cb85c;
+}
+.status-wrong {
+    background-color: #a94442;
+}
+.status-no-try {
+    background-color: #8a6d3b;
+}
+.status-unknow {
+    background-color: #999;
+}
+.seleted-rank {
+    background-color: #337AB7;
+}
+
+
+/*
+    index
+ */
+
+.rank {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 20px;
+    line-height: 50px;
+}
+.name {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+.problems {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+}
+.problems li {
+    padding: 3px 10px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+.solved {
+    width: 100px;
+}
+.penalty {
+    width: 100px;
+}

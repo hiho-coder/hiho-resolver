@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>The 2015 ACM-ICPC Asia Beijing Regional Contest</title>
+        <link type="text/css" rel="stylesheet" href="libs/style/bootstrap.min.css">
+        <link type="text/css" rel="stylesheet" href="libs/style/sticky-footer.css">
+        <link type="text/css" rel="stylesheet" href="css/main.css">
+    </head>
+    <body class="app">
+        <!-- top navbar -->
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">The 2015 ACM-ICPC Asia Beijing Regional Contest</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+                    <!-- <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul> -->
+                </div><!--/.nav-collapse -->
+            </div>
+        </nav>
+
+        <!-- page content -->
+        <div class="rank-list clearfix">
+            <div id="rank-{{team.rank}}" class="rank-list-item clearfix" v-repeat="team in ranks | orderBy 'rank'">
+                <div class="rank">{{ team.rank }}</div>
+                <div class="content">
+                    <div class="name">{{ team.name }}</div>
+                    <ul class="problems clearfix">
+                        <li class="status-{{p.status}}" v-repeat="p in team.problems" v-on="click: publish(team, p)">{{p.index}}</li>
+                    </ul>
+                </div>
+                <div class="penalty">{{team.penalty}}</div>
+                <div class="solved">{{team.solved}}</div>
+                <button v-on="click: changeRank(team)">changeR</button>
+            </div>
+        </div>
+
+        <pre style="margin:50px 10px;">{{ $data | json }}</pre>
+
+        <!-- sticky footer -->
+        <footer class="footer">
+            <div class="container clearfix">
+                <p class="text-muted pull-left"><button v-on="click: reset">重置排名</button></p>
+                <p class="text-muted pull-left" style="margin-left:50px"><button v-on="click: operationPop">撤销</button></p>
+                <button class="text-muted pull-left" v-on="click: deepClone">test _where</button>
+            </div>
+        </footer>
+
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script type="text/javascript" src="hiho-resolver.js"></script>
+        <script type="text/javascript" src="libs/js/jquery.min.js"></script>
+        <script type="text/javascript" src="libs/js/underscore-min.js"></script>
+        <script type="text/javascript" src="libs/js/vue.min.js"></script>
+        <script type="text/javascript" src="js/ranks-data.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+        <script>
+            $.getJSON("contest.json", function(data){
+                var resolver = new Resolver(data.solutions, data.users, data.problem_count);
+                resolver.calcOperations();
+                alert(resolver.users[46633].college);
+                alert(resolver.problem_count);
+            });
+        </script>
+    </body>
+</html>
