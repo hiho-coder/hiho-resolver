@@ -25,37 +25,21 @@
             </div>
         </nav>
 
-        <!-- page content -->
-        <div class="rank-list">
-            <div id="rank-{{$index}}" class="rank-list-item clearfix" v-for="team in ranks" track-by="user_id">
-                <div class="rank">{{ $index+1 }}</div>
-                <div class="content">
-                    <div class="name">{{ users[team.user_id].college }}--{{ users[team.user_id].name }}</div>
-                    <ul class="problems">
-                        <li v-for="n in p_count" class="{{team.problem[n+1]|problemStatus}} p-{{n+1}} item">
-                            <div class="{{team.problem[n+1]|problemStatus}} p-content">{{team.problem[n+1] | problemStatus}}</div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="penalty">{{ team.penalty | toMinutes }}</div>
-                <div class="solved">{{ team.score }}</div>
-            </div>
-        </div>
-
-        <!-- <pre style="margin:50px 10px;">{{ $data | json }}</pre> -->
+        <pre style="margin:50px 10px;">{{ $data | json }}</pre>
 
         <!-- sticky footer -->
         <footer class="footer">
             <div class="container clearfix">
-                <p class="text-muted pull-left"><button @click="reset">重置排名</button></p>
+                <p class="text-muted pull-left"><button v-on="click: reset">重置排名</button></p>
+                <p class="text-muted pull-left" style="margin-left:50px"><button v-on="click: operationPop">撤销</button></p>
+                <button class="text-muted pull-left">test _where</button>
             </div>
         </footer>
 
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script type="text/javascript" src="libs/js/jquery.min.js"></script>
         <script type="text/javascript" src="libs/js/underscore-min.js"></script>
-        <script type="text/javascript" src="libs/js/jquery.scrollTo.min.js"></script>
-        <script type="text/javascript" src="libs/js/vue.1.js"></script>
+        <script type="text/javascript" src="libs/js/vue.product.js"></script>
         <script type="text/javascript" src="hiho-resolver.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
     </body>

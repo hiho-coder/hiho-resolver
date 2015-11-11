@@ -81,7 +81,8 @@ Resolver.prototype.calcOperations = function() {
 		}
 		return b.score - a.score;
 	});
-	this.rank_frozen = $.extend(true, {}, this.rank2);
+	this.rank2.length = 20;
+	this.rank_frozen = $.extend(true, [], this.rank2);
 	for(var i = this.rank2.length - 1; i >= 0; i--) {
 		var flag = true;
 		while(flag) {

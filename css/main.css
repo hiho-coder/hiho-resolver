@@ -24,27 +24,50 @@
 .solved, .penalty {
     float: right;
 }
+.rank, .solved, .penalty {
+    font-size: 20px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 50px;
+}
 .rank-list-item {
     border-bottom: 1px solid #31708F;
     padding: 10px;
+    position: relative;
 }
 
-.status-solved {
+.ac {
     background-color: #5cb85c;
 }
-.status-wrong {
+.failed, .WA {
     background-color: #a94442;
 }
-.status-no-try {
+.frozen {
     background-color: #8a6d3b;
 }
-.status-unknow {
-    background-color: #999;
+.untouched {
+    background-color: #31708f;
+    color: #31708F;
 }
-.seleted-rank {
+
+.selected {
     background-color: #337AB7;
 }
 
+.uncover {
+    animation: flashing 300ms infinite;
+    -webkit-animation: flashing 30ms infinite; /*Safari and Chrome*/
+}
+
+@keyframes flashing {
+    from { background-color: #8a6d3b }
+    to { background-color: #BD995B }
+}
+
+@-webkit-keyframes flashing {/*Safari and Chrome*/
+    from { background-color: #8a6d3b }
+    to { background-color: #BD995B }
+}
 
 /*
     index
@@ -55,8 +78,8 @@
     height: 50px;
     text-align: center;
     vertical-align: middle;
-    font-size: 20px;
     line-height: 50px;
+    margin-right: 15px;
 }
 .name {
     font-size: 18px;
@@ -68,10 +91,14 @@
     padding: 0;
     font-size: 12px;
 }
-.problems li {
-    padding: 3px 10px;
-    border: 1px solid #ccc;
+.problems .item {
+    padding: 2px;
     margin-right: 10px;
+    width: 80px;
+    text-align: center;
+}
+.problems .item .p-content {
+    padding: 1px 0;
 }
 .solved {
     width: 100px;
