@@ -31,7 +31,9 @@
         next: function() {
             vm.$data.op_status = false;
             var op = vm.$data.operations[vm.$data.op_flag];
-            var op_next = vm.$data.operations[vm.$data.op_flag+1];
+            var op_length = vm.$data.operations.length - 1;
+            if(vm.$data.op_flag < op_length)
+                var op_next = vm.$data.operations[vm.$data.op_flag+1];
             var ranks = vm.$data.ranks;
             var rank_old = ranks[op.old_rank];
 
@@ -41,9 +43,9 @@
             el_old
                 .find('.p-'+op.problem_index).addClass('uncover')
                 .find('.p-content').addClass('uncover');
-            vm.selected(el_old, 'add');
             if(op.new_rank == op.old_rank){
-                var el_old_next = $('#rank-' + op_next.old_rank);
+                if(vm.$data.op_flag < op_length)
+                    var el_old_next = $('#rank-' + op_next.old_rank);
                 setTimeout(function(){ 
                     if(op.new_verdict == 'AC'){
                         rank_old.score += 1;
@@ -59,14 +61,14 @@
                         
                     setTimeout(function(){
                         vm.selected(el_old, 'remove');
-                        vm.selected(el_old_next, 'add');
+                        if(vm.$data.op_flag < op_length)
+                            vm.selected(el_old_next, 'add');
                         el_old.find('.p-'+op.problem_index).removeClass('uncover');
-                            // .find('.p-content').removeClass('uncover');
-
+                        // vm.scrollToTop(op.old_rank, op_next.old_rank);
                         vm.$data.op_flag += 1;
                         vm.$data.op_status = true;
-                    }, 1000);
-                }, 1000);
+                    }, 600);
+                }, 500);
             }else{
                 var old_pos_top = el_old.position().top;
                 var new_pos_top = el_new.position().top;
@@ -83,7 +85,6 @@
                 }
                 setTimeout(function(){
                     // return function(){
-                        
                         // 修改原始数据
                         if(op.new_verdict == 'AC'){
                             rank_old.score += 1;
@@ -108,7 +109,7 @@
                     setTimeout(function(){ 
                         el_old
                             .css('position', 'relative')
-                            .animate({ top: distance+'px' }, 2000, function(){
+                            .animate({ top: distance+'px' }, 1500, function(){
                                 el_new.removeAttr('style');
                                 el_old.removeAttr('style');
                                 var ranks_tmp = $.extend(true, [], ranks);
@@ -122,23 +123,21 @@
                                 Vue.nextTick(function () {
                                     el_obj.forEach(function(val,i){ el_obj[i].removeAttr('style'); });
                                     el_old.find('.p-'+op.problem_index).removeClass('uncover');
-                                    var el_old_next = $('#rank-' + op_next.old_rank);
+                                    if(vm.$data.op_flag < op_length)
+                                        var el_old_next = $('#rank-' + op_next.old_rank);
                                     vm.selected(el_old, 'remove');
-                                    vm.selected(el_old_next, 'add');
+                                    if(vm.$data.op_flag < op_length)
+                                        vm.selected(el_old_next, 'add');
+                                    // vm.scrollToTop(op.old_rank, op.new_rank);
                                     vm.$data.op_flag += 1;
                                     vm.$data.op_status = true;
                                 });
                             });
 
-                        el_obj.forEach(function(val,i){ el_obj[i].animate({'top': 75+'px',},2000); });
-                        // for(j; j >= op.new_rank; j--){
-                        //     var el = $('#rank-'+ j);
-                        //     el_obj.push(el);
-                        //     el.animate({'top': 75+'px',},2000);
-                        // }
-                    }, 1000);// two loop    
+                        el_obj.forEach(function(val,i){ el_obj[i].animate({'top': 75+'px',},1500); });
+                    }, 600);// two loop    
                     // };
-                }, 1500);
+                }, 500);
             }
         },
 
@@ -201,22 +200,29 @@ function vuejs() {
                 }
             },
 
-            uncover: function(){
-
+            selected: function(el, type){
+                if(type == 'add'){
+                    el.addClass('selected');
+                    // var win_heigth = $(window).height();
+                    // var el_pos = el.position().top;
+                    // var offset = el_pos - win_heigth + 261;
+                    // window.scrollTo(0, offset);
+                }else if(type == 'remove')
+                    el.removeClass('selected');
+                
             },
 
-            selected: function(el, type){
-                if(el === undefined)
-                    return;
-                if(type == 'add')
-                    el.addClass('selected');
-                else if(type == 'remove')
-                    el.removeClass('selected');
-                // var win_heigth = $(window).height();
-                // var pos = el.position().top;
-                // var offset = pos - win_heigth + 261;
-                // window.scrollTo(0, offset);
-            }
+            // scrollToTop: function(old_rank, new_rank){
+            //     var next_scrollY = -(new_rank * 75 + 52); // 75px: rank-item height; 52px: header
+            //     scrollInterval = setInterval(function(){
+            //         if (window.scrollY != next_scrollY) {
+            //             window.scrollBy(0, -1);
+            //         }
+            //         else clearInterval(scrollInterval); 
+            //     },30);
+
+            // }
+
         }
     });
 }
@@ -226,6 +232,13 @@ $.getJSON("contest.json", function(data){
     window.resolver = resolver;
     resolver.calcOperations();
     vuejs();
+
+    // var el = $("#rank-0").position().top;
+    // alert(el);
+    // alert(window.scrollY);
+    // alert($(document).height());
+    // alert(document.body.clientHeight);
+
     document.onkeydown = function(event){
         var e = event || window.event || arguments.callee.caller.arguments[0];
         if(e && e.keyCode == 37 && vm.$data.op_status){ // key left
