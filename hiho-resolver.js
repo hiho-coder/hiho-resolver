@@ -33,7 +33,9 @@ Resolver.prototype.calcOperations = function() {
 					'new_penalty':0,
 					'old_verdict':'NA',
 					'new_verdict':'NA',
-					'submissions':0,	//does not include the AC submission
+					'old_submissions':0,	//include the AC submission
+					'fronze_submissions': 0,
+					'new_submissions':0,
 					'ac_penalty':0
 				};
 			}
@@ -45,26 +47,30 @@ Resolver.prototype.calcOperations = function() {
 		if(sol.submitted_seconds <= this.frozen_seconds) {
 			this.rank[sol.user_id].problem[sol.problem_index].old_verdict = sol.verdict;
 			if(sol.verdict == 'AC') {
+				this.rank[sol.user_id].problem[sol.problem_index].old_submissions++;
 				this.rank[sol.user_id].problem[sol.problem_index].ac_penalty = sol.submitted_seconds;
-				this.rank[sol.user_id].problem[sol.problem_index].old_penalty = this.rank[sol.user_id].problem[sol.problem_index].ac_penalty + 20 * 60 * this.rank[sol.user_id].problem[sol.problem_index].submissions;
+				this.rank[sol.user_id].problem[sol.problem_index].old_penalty = this.rank[sol.user_id].problem[sol.problem_index].ac_penalty + 20 * 60 * (this.rank[sol.user_id].problem[sol.problem_index].old_submissions - 1);
 				this.rank[sol.user_id].score++;
 				this.rank[sol.user_id].penalty += this.rank[sol.user_id].problem[sol.problem_index].old_penalty;
 			}
 			else {
-				this.rank[sol.user_id].problem[sol.problem_index].submissions++;
+				this.rank[sol.user_id].problem[sol.problem_index].old_submissions++;
 			}
 		}
-		else {	//after standings get frozen
+		else {	//after standings get frozen	
 			if(this.rank[sol.user_id].problem[sol.problem_index].new_verdict=='AC') {
+				this.rank[sol.user_id].problem[sol.problem_index].frozen_submissions++;
 				continue;
 			}
 			this.rank[sol.user_id].problem[sol.problem_index].new_verdict = sol.verdict;
 			if(sol.verdict == 'AC') {
+				this.rank[sol.user_id].problem[sol.problem_index].frozen_submissions++;
+				this.rank[sol.user_id].problem[sol.problem_index].new_submissions = this.rank[sol.user_id].problem[sol.problem_index].old_submissions + this.rank[sol.user_id].problem[sol.problem_index].frozen_submissions;
 				this.rank[sol.user_id].problem[sol.problem_index].ac_penalty = sol.submitted_seconds;
-				this.rank[sol.user_id].problem[sol.problem_index].new_penalty = this.rank[sol.user_id].problem[sol.problem_index].ac_penalty + 20 * 60 * this.rank[sol.user_id].problem[sol.problem_index].submissions;
+				this.rank[sol.user_id].problem[sol.problem_index].new_penalty = this.rank[sol.user_id].problem[sol.problem_index].ac_penalty + 20 * 60 * (this.rank[sol.user_id].problem[sol.problem_index].new_submissions - 1);
 			}
 			else {
-				this.rank[sol.user_id].problem[sol.problem_index].submissions++;
+				this.rank[sol.user_id].problem[sol.problem_index].frozen_submissions++;
 			}
 		}
 	}
@@ -96,7 +102,9 @@ Resolver.prototype.calcOperations = function() {
 						problem_index: j,
       					old_verdict: this.rank2[i].problem[j].old_verdict,
 						new_verdict: this.rank2[i].problem[j].new_verdict,
-						submissions: this.rank2[i].problem[j].submissions,
+						old_submissions: this.rank2[i].problem[j].old_submissions,
+						frozen_submissions: this.rank2[i].problem[j].frozen_submissions,
+						new_submissions: this.rank2[i].problem[j].new_submissions,
 						old_rank: i,
 						new_rank: -1,
 						old_penalty: this.rank2[i].problem[j].old_penalty,

@@ -90,6 +90,11 @@
                         }
                         rank_old.problem[op.problem_index].old_verdict = op.new_verdict;
                         rank_old.problem[op.problem_index].new_verdict = "NA";
+                        if(op.new_submissions > 0) {
+                            rank_old.problem[op.problem_index].old_submissions = op.new_submissions;
+                            rank_old.problem[op.problem_index].frozen_submissions = 0;
+                            rank_old.problem[op.problem_index].new_submissions = 0;
+                        }
                         //
                         Vue.nextTick(function(){
                             //添加揭晓题目闪动效果
