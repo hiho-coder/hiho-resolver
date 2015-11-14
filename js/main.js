@@ -2,17 +2,16 @@
  *  main.js
  */
 
-(function(exports){
-    
-    'use strict';
-
+// Vuejs
+function vuejs() {
+      
     var RANKS_KEY = 'icpc-ranks';
     var OPER_FLAG_KEY = 'operation-flag';
 
-    exports.Storage = {
+    window.Storage = {
         fetch: function(type) {
             if(type == 'ranks')
-                return JSON.parse(localStorage.getItem(RANKS_KEY)) || exports.resolver.rank_frozen;
+                return JSON.parse(localStorage.getItem(RANKS_KEY)) || window.resolver.rank_frozen;
             else if(type == 'opera_flag')
                 return localStorage.getItem(OPER_FLAG_KEY) || 0;
         },
@@ -25,7 +24,7 @@
         }
     };
 
-    exports.Operation = {
+    window.Operation = {
         next: function() {
             vm.$data.op_status = false;
             var op = vm.$data.operations[vm.$data.op_flag];
@@ -48,9 +47,22 @@
                     if(op.new_verdict == 'AC'){
                         rank_old.score += 1;
                         rank_old.penalty += op.new_penalty;
+                        rank_old.problem[op.problem_index].old_penalty = op.new_penalty;
                     }
                     rank_old.problem[op.problem_index].old_verdict = op.new_verdict;
                     rank_old.problem[op.problem_index].new_verdict = "NA";
+                    
+                    //if(op.new_submissions > 0) {
+                    if(op.new_verdict == 'AC'){
+                        rank_old.problem[op.problem_index].old_submissions = op.new_submissions;
+                        rank_old.problem[op.problem_index].frozen_submissions = 0;
+                        rank_old.problem[op.problem_index].new_submissions = 0;
+                    }
+                    else {
+                        rank_old.problem[op.problem_index].old_submissions +=  op.frozen_submissions;
+                        rank_old.problem[op.problem_index].frozen_submissions = 0;
+                        rank_old.problem[op.problem_index].new_submissions = 0;
+                    }
                     Vue.nextTick(function(){
                         el_old
                             .find('.p-'+op.problem_index).addClass('uncover')
@@ -87,13 +99,22 @@
                         if(op.new_verdict == 'AC'){
                             rank_old.score += 1;
                             rank_old.penalty += op.new_penalty;
+                            rank_old.problem[op.problem_index].old_penalty = op.new_penalty;
                         }
                         rank_old.problem[op.problem_index].old_verdict = op.new_verdict;
                         rank_old.problem[op.problem_index].new_verdict = "NA";
-                        if(op.new_submissions > 0) {
+                        
+                        //if(op.new_submissions > 0) {
+                        if(op.new_verdict == 'AC'){
                             rank_old.problem[op.problem_index].old_submissions = op.new_submissions;
                             rank_old.problem[op.problem_index].frozen_submissions = 0;
                             rank_old.problem[op.problem_index].new_submissions = 0;
+                        }
+                        else {
+                            rank_old.problem[op.problem_index].old_submissions +=  op.frozen_submissions;
+                            rank_old.problem[op.problem_index].frozen_submissions = 0;
+                            rank_old.problem[op.problem_index].new_submissions = 0;
+                            alert(rank_old.problem[op.problem_index].old_submissions);
                         }
                         //
                         Vue.nextTick(function(){
@@ -148,11 +169,7 @@
 
         }
     };
-
-})(window);
-
-// Vuejs
-function vuejs() {
+    
     Vue.filter('toMinutes', function (value) {
         return parseInt(value/60);
     });
@@ -161,10 +178,16 @@ function vuejs() {
         return resolver.status(problem);
     });
     
-    Vue.filter('submissions', function (value) {
-        var st = resolver.status(value);
+    Vue.filter('submissions', function (problem) {
+        var st = resolver.status(problem);
         if(st == 'ac')
-            return value.submissions + 1;
+            return problem.old_submissions + '/' + parseInt(problem.old_penalty / 60);
+        else if(st == 'frozen')
+            return problem.old_submissions + '+' + problem.frozen_submissions;
+        else if(st == 'failed')
+            return problem.old_submissions;
+        else 
+            return 'untouched';
         // todo
     });
 
@@ -178,6 +201,7 @@ function vuejs() {
             op_status: true,  // running: false, stop: true
             p_count: resolver.problem_count,
             ranks: Storage.fetch('ranks'),
+            //ranks: resolver.rank_frozen,
             operations: resolver.operations,
             users: resolver.users
         },
@@ -232,7 +256,7 @@ function vuejs() {
     });
 }
 
-$.getJSON("contest.json", function(data){
+$.getJSON("contest2.json", function(data){
     var resolver = new Resolver(data.solutions, data.users, data.problem_count);
     window.resolver = resolver;
     resolver.calcOperations();

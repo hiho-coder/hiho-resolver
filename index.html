@@ -33,7 +33,7 @@
                     <div class="name">{{ users[team.user_id].college }}--{{ users[team.user_id].name }}</div>
                     <ul class="problems">
                         <li v-for="n in p_count" class="{{team.problem[n+1]|problemStatus}} p-{{n+1}} item">
-                            <div class="{{team.problem[n+1]|problemStatus}} p-content">{{team.problem[n+1] | problemStatus}}</div>
+                            <div class="{{team.problem[n+1]|problemStatus}} p-content">{{team.problem[n+1] | submissions}}</div>
                         </li>
                     </ul>
                 </div>

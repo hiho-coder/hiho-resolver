@@ -2,7 +2,7 @@ function Resolver(solutions, users, problem_count){
 	this.solutions = solutions;
 	this.users = users;
 	this.problem_count = problem_count;
-	this.frozen_seconds = 3600 * 4;
+	this.frozen_seconds = 3600 * 2;
 	this.operations = [];
 }
 
@@ -34,7 +34,7 @@ Resolver.prototype.calcOperations = function() {
 					'old_verdict':'NA',
 					'new_verdict':'NA',
 					'old_submissions':0,	//include the AC submission
-					'fronze_submissions': 0,
+					'frozen_submissions': 0,
 					'new_submissions':0,
 					'ac_penalty':0
 				};
@@ -87,7 +87,7 @@ Resolver.prototype.calcOperations = function() {
 		}
 		return b.score - a.score;
 	});
-	this.rank2.length = 200;
+	//this.rank2.length = 200;
 	this.rank_frozen = $.extend(true, [], this.rank2);
 	for(var i = this.rank2.length - 1; i >= 0; i--) {
 		var flag = true;
