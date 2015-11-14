@@ -186,8 +186,10 @@ function vuejs() {
                 Storage.update('opera_flag', op_flag);
             }, {'deep': true});
 
-            var op = this.operations[this.op_flag];
-            this.selected($('#rank-'+op.old_rank), 'add');
+            if(this.op_flag < this.operations.length){
+                var op = this.operations[this.op_flag];
+                this.selected($('#rank-'+op.old_rank), 'add');
+            }
         },
 
         methods: {
@@ -225,7 +227,7 @@ function vuejs() {
     });
 }
 
-$.getJSON("contest.json", function(data){
+$.getJSON("contest2.json", function(data){
     var resolver = new Resolver(data.solutions, data.users, data.problem_count);
     window.resolver = resolver;
     resolver.calcOperations();
