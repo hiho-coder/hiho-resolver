@@ -8,8 +8,6 @@
 
     var RANKS_KEY = 'icpc-ranks';
     var OPER_FLAG_KEY = 'operation-flag';
-    var NEXT_SPEED = 3000; //ms
-    var BACK_SPEED = 2000; //ms
 
     exports.Storage = {
         fetch: function(type) {
@@ -134,7 +132,7 @@
                                 });
                             });
 
-                        el_obj.forEach(function(val,i){ el_obj[i].animate({'top': 75+'px',},1500); });
+                        el_obj.forEach(function(val,i){ el_obj[i].animate({'top': 106+'px',},1500); });
                     }, 600);// two loop    
                     // };
                 }, 500);

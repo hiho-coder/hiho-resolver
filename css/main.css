@@ -15,7 +15,7 @@
     common
  */
 .app {
-    background-color: #286090;
+    background-color: #1E5381;
     color: white;
 }
 .rank, .content, .problems li {
@@ -25,10 +25,10 @@
     float: right;
 }
 .rank, .solved, .penalty {
-    font-size: 20px;
+    font-size: 35px;
     text-align: center;
     vertical-align: middle;
-    line-height: 50px;
+    line-height: 83px;
 }
 .rank-list-item {
     border-bottom: 1px solid #31708F;
@@ -51,7 +51,7 @@
 }
 
 .selected {
-    background-color: #337AB7;
+    background-color: #568CBC;
 }
 
 .uncover {
@@ -74,15 +74,16 @@
  */
 
 .rank {
-    width: 50px;
-    height: 50px;
+    width: 58px;
+    height: 58px;
+    font-size: 35px;
     text-align: center;
     vertical-align: middle;
-    line-height: 50px;
+    line-height: 83px;
     margin-right: 15px;
 }
 .name {
-    font-size: 18px;
+    font-size: 35px;
     margin-bottom: 5px;
 }
 .problems {
@@ -94,11 +95,12 @@
 .problems .item {
     padding: 2px;
     margin-right: 10px;
-    width: 80px;
+    width: 88px;
     text-align: center;
 }
 .problems .item .p-content {
     padding: 1px 0;
+    font-size: 17px;
 }
 .solved {
     width: 100px;
