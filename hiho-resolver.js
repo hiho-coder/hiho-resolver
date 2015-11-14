@@ -2,7 +2,7 @@ function Resolver(solutions, users, problem_count){
 	this.solutions = solutions;
 	this.users = users;
 	this.problem_count = problem_count;
-	this.frozen_seconds = 3600 * 2;
+	this.frozen_seconds = 3600 * 4;
 	this.operations = [];
 }
 
@@ -87,7 +87,7 @@ Resolver.prototype.calcOperations = function() {
 		}
 		return b.score - a.score;
 	});
-	// this.rank2.length = 200;
+	this.rank2.length = 200;
 	this.rank_frozen = $.extend(true, [], this.rank2);
 	for(var i = this.rank2.length - 1; i >= 0; i--) {
 		var flag = true;

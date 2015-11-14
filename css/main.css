@@ -94,16 +94,16 @@
 }
 .problems .item {
     padding: 2px;
-    margin-right: 10px;
-    width: 88px;
+    margin-right: 5px;
+    width: 80px;
     text-align: center;
 }
 .problems .item .p-content {
     padding: 1px 0;
-    font-size: 17px;
+    font-size: 15px;
 }
 .solved {
-    width: 100px;
+    width: 70px;
 }
 .penalty {
     width: 100px;
