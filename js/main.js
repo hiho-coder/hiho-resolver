@@ -227,7 +227,7 @@ function vuejs() {
     });
 }
 
-$.getJSON("contest2.json", function(data){
+$.getJSON("contest.json", function(data){
     var resolver = new Resolver(data.solutions, data.users, data.problem_count);
     window.resolver = resolver;
     resolver.calcOperations();
